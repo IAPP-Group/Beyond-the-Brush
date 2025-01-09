@@ -12,7 +12,7 @@ def sample_n_images(input_dir, n_images, dataset_name):
     
     json_files = [os.path.join(input_dir, file) for file in os.listdir(input_dir) if file.endswith("json")]
     if n_images is None or n_images > len(json_files):
-        print(f"Warning: you request to sample {n_images} but there are only {len(json_files)} files in the input directory.")
+        print(f"You are using all the files in the input directory.")
         with open(f'./sampled_{len(json_files)}_images_{dataset_name}.txt', 'w') as f:
             for file in json_files:
                 f.write(file+"\n")
