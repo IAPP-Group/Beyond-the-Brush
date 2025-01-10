@@ -23,7 +23,7 @@ The Beyond the Brush (BtB) is a fully automated pipeline for generating realisti
 
   
 **2. Set up the environment**
-```
+```bash
 conda create -n btb python=3.8
 conda activate btb
 pip install -r requirements.txt
