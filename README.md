@@ -37,7 +37,7 @@ Download the [RAM model weights](https://huggingface.co/spaces/xinyu1205/recogni
 ### 1. Mask Extraction
 This module extracts meaningful regions for inpainting.
 
-`python process_images.py --output_path --top_masks --ram_model_path --device input_list_path`
+`python process_images.py --output_path MASKS_FOLDER --top_masks 10 --ram_model_path RAM_WEIGHTS.pth --device cuda input_list_path`
 
 * `--output_path` specifies the directory to save the extracted masks (default: ./out)
 * `--top_masks` is the number of top masks to extract per image (corresponding to the highest score)
@@ -49,10 +49,10 @@ The extracted data is saved in JSON and NPZ formats:
 * JSON files store metadata and mask information.
 * NPZ files contain the binary mask arrays
 
-### 1.1 Postprocess Images
+### 1.1 Postprocess Masks
 After extraction, post-process the masks for the next step.
 
-`python post_processing.py --input_dir --num_images --dataset_name --save_dir_masks --save_dir_bb`
+`python post_processing.py --input_dir MASKS_FOLDER --num_images 500 --dataset_name Flickr30k --save_dir_masks MASKS_DESTINATION_FOLDER --save_dir_bb BB_DESTINATION_FOLDER`
 
 * `--input_dir` is the directory with .json and .npz files from mask extraction
 * `--num_images` is the number of images to sample (default: None, which means all)
@@ -71,7 +71,7 @@ Moreover, it will generate three txt files within the project directory:
 ### 2. Prompt Generation
 This module generates text prompts for the inpainting step using a Visual Language Model.
 
-`python generate_prompts.py --output_dir --bounding_box_dir --labels_file --num_prompt`
+`python generate_prompts.py --output_dir PROMPT_DESTINATION_FOLDER --bounding_box_dir BB_DESTINATION_FOLDER --labels_file best_masks_labels_Flickr30k.txt --num_prompt 5`
 
 * `--output_dir` is the directory to store generated prompts as .json files for each image
 * `--bounding_box_dir` is the directory containing the images with the green bounding box
@@ -88,7 +88,7 @@ This module inpaints the images using Fooocus.
 
 #### Inpaiting command
 
-`python inpaint_images_fooocus.py --images_path --masks_path --prompt --save_path --fooocus_api_dir`
+`python inpaint_images_fooocus.py --images_path source_images_path_Flickr30k.txt --masks_path MASKS_DESTINATION_FOLDER --prompt PROMPT_DESTINATION_FOLDER --save_path BTB_DESTINATION_FOLDER --fooocus_api_dir FOOOCUS_API_FOLDER`
 
 * `--images_path` is the txt file with the path of source images to be inpaint
 * `--masks_path` is the directory containing the extracted masks
